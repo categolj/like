@@ -57,6 +57,17 @@ public class LikeController {
         return this.likeRepository.save(like);
     }
 
+    @DeleteMapping(path = "{entryId}")
+    public Mono<Void> deleteLike(@PathVariable("entryId") Long entryId,
+                                 @RequestHeader(name = HttpHeaders.USER_AGENT) String userAgent,
+                                 ServerWebExchange exchange) {
+        final String ipAddress = getIpAddress(exchange);
+        if (isBlocked(userAgent, ipAddress)) {
+            return Mono.empty();
+        }
+        return this.likeRepository.deleteByEntryIdAndIpAddress(entryId, ipAddress);
+    }
+
     static String getIpAddress(ServerWebExchange exchange) {
         final ServerHttpRequest request = exchange.getRequest();
         final Optional<String> xForwardedFor = Optional.ofNullable(request.getHeaders().getFirst("X-Forwarded-For"))

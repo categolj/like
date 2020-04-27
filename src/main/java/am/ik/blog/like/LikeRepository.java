@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static org.springframework.data.relational.core.query.Criteria.where;
+
 @Repository
 public class LikeRepository {
     private final DatabaseClient databaseClient;
@@ -50,5 +52,14 @@ public class LikeRepository {
                 .using(like)
                 .then()
                 .thenReturn(like);
+    }
+
+    @Transactional
+    public Mono<Void> deleteByEntryIdAndIpAddress(Long entryId, String ipAddress) {
+        return this.databaseClient.delete()
+                .from(Like.class)
+                .matching(where("entry_id").is(entryId)
+                        .and("ip_address").is(ipAddress))
+                .then();
     }
 }
