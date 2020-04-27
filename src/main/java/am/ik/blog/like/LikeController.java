@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "like")
+@RequestMapping(path = "likes")
 @CrossOrigin
 public class LikeController {
     private final LikeRepository likeRepository;
