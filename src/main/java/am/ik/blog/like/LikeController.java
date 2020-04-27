@@ -32,9 +32,9 @@ public class LikeController {
 
     @GetMapping(path = "{entryId}")
     public Mono<Map<String, Object>> getLike(@PathVariable("entryId") Long entryId,
-                                             @RequestHeader(name = HttpHeaders.USER_AGENT) String userAgent,
                                              ServerWebExchange exchange) {
         final String ipAddress = getIpAddress(exchange);
+        final String userAgent = exchange.getRequest().getHeaders().getFirst(HttpHeaders.USER_AGENT);
         if (isBlocked(userAgent, ipAddress)) {
             return Mono.just(Map.of("count", 0, "exists", true));
         }
@@ -47,10 +47,10 @@ public class LikeController {
 
     @PostMapping(path = "{entryId}")
     public Mono<Like> postLike(@PathVariable("entryId") Long entryId,
-                               @RequestHeader(name = HttpHeaders.USER_AGENT) String userAgent,
                                ServerWebExchange exchange) {
         final String ipAddress = getIpAddress(exchange);
         final Like like = new Like(UUID.randomUUID().toString(), entryId, LocalDateTime.now(), ipAddress);
+        final String userAgent = exchange.getRequest().getHeaders().getFirst(HttpHeaders.USER_AGENT);
         if (isBlocked(userAgent, ipAddress)) {
             return Mono.just(like);
         }
@@ -59,7 +59,6 @@ public class LikeController {
 
     @DeleteMapping(path = "{entryId}")
     public Mono<Void> deleteLike(@PathVariable("entryId") Long entryId,
-                                 @RequestHeader(name = HttpHeaders.USER_AGENT) String userAgent,
                                  ServerWebExchange exchange) {
         final String ipAddress = getIpAddress(exchange);
         return this.likeRepository.deleteByEntryIdAndIpAddress(entryId, ipAddress);
