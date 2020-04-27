@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -67,7 +68,7 @@ public class LikeController {
     }
 
     static boolean isBlocked(String userAgent, String ipAddress) {
-        final boolean isBrowser = Classifier.tryBrowser(userAgent, Map.of());
+        final boolean isBrowser = Classifier.tryBrowser(userAgent, new HashMap<>());
         return !(isBrowser || "127.0.0.1".equals(ipAddress));
     }
 }
