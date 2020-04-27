@@ -1,5 +1,6 @@
 package am.ik.blog.like;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -32,6 +33,7 @@ public class Like {
         return likeAt;
     }
 
+    @JsonIgnore
     public String getIpAddress() {
         return ipAddress;
     }
