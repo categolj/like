@@ -1,7 +1,7 @@
 applications:
 - name: like
   path: target/like-0.0.1-SNAPSHOT.jar
-  memory: 200m
+  memory: 256m
   buildpacks:
   - java_buildpack_offline
   health-check-type: http
@@ -11,12 +11,13 @@ applications:
   - prometheus-rsocket-proxy # cf create-user-provided-service prometheus-rsocket-proxy -p '{"host": "rsocket.example.com", "port": 7001}'
   - zipkin # cf create-user-provided-service zipkin -p '{"url": "https://zipkin.example.com"}'
   env:
+    JAVA_OPTS: -XX:ReservedCodeCacheSize=32M -Xss512k -Duser.timezone=Asia/Tokyo
+    JBP_CONFIG_OPEN_JDK_JRE: '{memory_calculator: {stack_threads: 16}, jre: {version: 14.+}}'
+    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'
     SPRING_R2DBC_URL: r2dbc:mysql://${vcap.services.like-db.credentials.hostname}:${vcap.services.like-db.credentials.port}/${vcap.services.like-db.credentials.name}
     SPRING_R2DBC_USERNAME: ${vcap.services.like-db.credentials.username}
     SPRING_R2DBC_PASSWORD: ${vcap.services.like-db.credentials.password}
     SPRING_ZIPKIN_BASE_URL: ${vcap.services.zipkin.credentials.url}
-    JAVA_OPTS: -XX:ReservedCodeCacheSize=32M -Xss512k -Duser.timezone=Asia/Tokyo
-    JBP_CONFIG_OPEN_JDK_JRE: '{memory_calculator: {stack_threads: 16}, jre: {version: 14.+}}'
     MANAGEMENT_METRICS_TAGS_ORGANIZATION: ${vcap.application.organization_name}
     MANAGEMENT_METRICS_TAGS_SPACE: ${vcap.application.space_name}
     MANAGEMENT_METRICS_TAGS_APPLICATION: ${vcap.application.application_name}
