@@ -62,9 +62,6 @@ public class LikeController {
                                  @RequestHeader(name = HttpHeaders.USER_AGENT) String userAgent,
                                  ServerWebExchange exchange) {
         final String ipAddress = getIpAddress(exchange);
-        if (isBlocked(userAgent, ipAddress)) {
-            return Mono.empty();
-        }
         return this.likeRepository.deleteByEntryIdAndIpAddress(entryId, ipAddress);
     }
 
