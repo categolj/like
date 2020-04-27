@@ -39,7 +39,7 @@ public class LikeController {
                 .map(tpl -> Map.of("count", tpl.getT1(), "exists", tpl.getT2()));
     }
 
-    @PostMapping(path = "/{entryId}")
+    @PostMapping(path = "{entryId}")
     public Mono<Like> postLike(@PathVariable("entryId") Long entryId,
                                @RequestHeader(name = HttpHeaders.USER_AGENT) String userAgent,
                                ServerWebExchange exchange) {
