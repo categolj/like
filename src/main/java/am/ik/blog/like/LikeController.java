@@ -2,6 +2,7 @@ package am.ik.blog.like;
 
 import is.tagomor.woothee.Classifier;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
@@ -32,9 +33,7 @@ public class LikeController {
     public Mono<Map<String, Object>> getLike(@PathVariable("entryId") Long entryId,
                                              @RequestHeader(name = HttpHeaders.USER_AGENT) String userAgent,
                                              ServerWebExchange exchange) {
-        final String ipAddress = Optional.ofNullable(exchange.getRequest().getRemoteAddress())
-                .map(InetSocketAddress::getHostString)
-                .orElse("0.0.0.0");
+        final String ipAddress = getIpAddress(exchange);
         if (isBlocked(userAgent, ipAddress)) {
             return Mono.just(Map.of("count", 0, "exists", true));
         }
@@ -49,14 +48,22 @@ public class LikeController {
     public Mono<Like> postLike(@PathVariable("entryId") Long entryId,
                                @RequestHeader(name = HttpHeaders.USER_AGENT) String userAgent,
                                ServerWebExchange exchange) {
-        final String ipAddress = Optional.ofNullable(exchange.getRequest().getRemoteAddress())
-                .map(InetSocketAddress::getHostString)
-                .orElse("0.0.0.0");
+        final String ipAddress = getIpAddress(exchange);
         final Like like = new Like(UUID.randomUUID().toString(), entryId, LocalDateTime.now(), ipAddress);
         if (isBlocked(userAgent, ipAddress)) {
             return Mono.just(like);
         }
         return this.likeRepository.save(like);
+    }
+
+    static String getIpAddress(ServerWebExchange exchange) {
+        final ServerHttpRequest request = exchange.getRequest();
+        final Optional<String> xForwardedFor = Optional.ofNullable(request.getHeaders().getFirst("X-Forwarded-For"))
+                .map(x -> x.split(",")[0])
+                .map(String::strip);
+        return xForwardedFor.or(() -> Optional.ofNullable(request.getRemoteAddress())
+                .map(InetSocketAddress::getHostString))
+                .orElse("0.0.0.0");
     }
 
     static boolean isBlocked(String userAgent, String ipAddress) {
