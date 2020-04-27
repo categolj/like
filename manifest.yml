@@ -19,6 +19,7 @@ applications:
     SPRING_R2DBC_USERNAME: ${vcap.services.like-db.credentials.username}
     SPRING_R2DBC_PASSWORD: ${vcap.services.like-db.credentials.password}
     SPRING_ZIPKIN_BASE_URL: ${vcap.services.zipkin.credentials.url}
+    SPRING_ZIPKIN_SERVICE_NAME: ${management.metrics.tags.space}:like
     MANAGEMENT_METRICS_TAGS_ORGANIZATION: ${vcap.application.organization_name}
     MANAGEMENT_METRICS_TAGS_SPACE: ${vcap.application.space_name}
     MANAGEMENT_METRICS_TAGS_APPLICATION: ${vcap.application.application_name}
