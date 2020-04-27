@@ -1,0 +1,17 @@
+apiVersion: gateway.cloud.ik.am/v1beta1
+kind: RouteDefinition
+metadata:
+  name: like
+  namespace: blog
+spec:
+  route:
+    filters:
+    - SetRequestHeader=Host, like.apps.pcfone.io
+    - RequestLogging=
+    - name: Retry
+      args:
+        retries: "3"
+        statuses: BAD_GATEWAY,NOT_FOUND
+    predicates:
+    - Host=like.dev.ik.am
+    uri: https://like.apps.pcfone.io:443
