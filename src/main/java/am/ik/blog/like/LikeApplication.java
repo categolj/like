@@ -1,8 +1,10 @@
 package am.ik.blog.like;
 
+import io.micrometer.core.instrument.config.MeterFilter;
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
@@ -23,5 +25,14 @@ public class LikeApplication {
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator(script);
         initializer.setDatabasePopulator(populator);
         return initializer;
+    }
+
+    @Bean
+    public MeterRegistryCustomizer<?> meterRegistryCustomizer() {
+        return registry -> registry.config()
+                .meterFilter(MeterFilter.deny(id -> {
+                    String uri = id.getTag("uri");
+                    return uri != null && (uri.startsWith("/actuator") || uri.startsWith("/cloudfoundryapplication"));
+                }));
     }
 }
