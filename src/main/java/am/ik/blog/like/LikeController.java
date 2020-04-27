@@ -4,6 +4,7 @@ import is.tagomor.woothee.Classifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.InetSocketAddress;
@@ -20,6 +21,11 @@ public class LikeController {
 
     public LikeController(LikeRepository likeRepository) {
         this.likeRepository = likeRepository;
+    }
+
+    @GetMapping(path = "")
+    public Flux<Like> getLikes() {
+        return this.likeRepository.findOrderByLikeAtDesc();
     }
 
     @GetMapping(path = "{entryId}")

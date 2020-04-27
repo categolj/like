@@ -1,8 +1,11 @@
 package am.ik.blog.like;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
@@ -11,6 +14,15 @@ public class LikeRepository {
 
     public LikeRepository(DatabaseClient databaseClient) {
         this.databaseClient = databaseClient;
+    }
+
+    public Flux<Like> findOrderByLikeAtDesc() {
+        return this.databaseClient.select()
+                .from(Like.class)
+                .orderBy(Sort.Order.desc("like_at"))
+                .page(PageRequest.of(0, 20))
+                .fetch()
+                .all();
     }
 
     public Mono<Long> countByEntryId(Long entryId) {
