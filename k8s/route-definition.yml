@@ -18,4 +18,4 @@ spec:
         statuses: BAD_GATEWAY,NOT_FOUND
     predicates:
     - Host=like.dev.ik.am
-    uri: https://like.apps.pcfone.io:443
+    uri: https://like.cfapps.io:443
