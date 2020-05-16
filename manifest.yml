@@ -2,6 +2,7 @@ applications:
 - name: like
   path: target/like-0.0.1-SNAPSHOT.jar
   memory: 256m
+  timeout: 180
   buildpacks:
   - java_buildpack
   health-check-type: http
