@@ -88,7 +88,7 @@
         <dependency>
             <groupId>io.micrometer.prometheus</groupId>
             <artifactId>prometheus-rsocket-spring</artifactId>
-            <version>0.11.0</version>
+            <version>1.0.0</version>
         </dependency>
         <!--
         <dependency>
