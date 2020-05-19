@@ -4,7 +4,7 @@ applications:
   memory: 256m
   timeout: 180
   buildpacks:
-  - java_buildpack
+  - java_buildpack_offline
   health-check-type: http
   health-check-http-endpoint: /actuator/health
   services:
