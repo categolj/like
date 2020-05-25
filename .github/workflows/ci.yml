@@ -23,7 +23,7 @@ jobs:
     - name: mvn package
       run: |
         set -e
-        ./mvnw -V package
+        ./mvnw -V package -U
     - name: cf push
       if: github.ref == 'refs/heads/master'
       env:

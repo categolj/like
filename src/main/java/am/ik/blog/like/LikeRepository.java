@@ -55,11 +55,12 @@ public class LikeRepository {
     }
 
     @Transactional
-    public Mono<Void> deleteByEntryIdAndIpAddress(Long entryId, String ipAddress) {
+    public Mono<Integer> deleteByEntryIdAndIpAddress(Long entryId, String ipAddress) {
         return this.databaseClient.delete()
                 .from(Like.class)
                 .matching(where("entry_id").is(entryId)
                         .and("ip_address").is(ipAddress))
-                .then();
+                .fetch()
+                .rowsUpdated();
     }
 }
