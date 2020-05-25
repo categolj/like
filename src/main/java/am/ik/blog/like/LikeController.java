@@ -47,8 +47,7 @@ public class LikeController implements LikesApi {
         final Mono<Boolean> existsMono = this.likeRepository.existsByEntryIdAndIpAddress(entryId, ipAddress);
         return countMono.zipWith(existsMono)
                 .map(tpl -> new LikeCountResponse().count(tpl.getT1()).exists(tpl.getT2()))
-                .map(ResponseEntity::ok)
-                .switchIfEmpty(Mono.fromCallable(() -> ResponseEntity.notFound().build()));
+                .map(ResponseEntity::ok);
     }
 
     @Override
@@ -68,6 +67,7 @@ public class LikeController implements LikesApi {
     public Mono<ResponseEntity<Void>> deleteLike(Long entryId, ServerWebExchange exchange) {
         final String ipAddress = getIpAddress(exchange);
         return this.likeRepository.deleteByEntryIdAndIpAddress(entryId, ipAddress)
+                .filter(c -> c > 0)
                 .map(__ -> ResponseEntity.noContent().<Void>build())
                 .switchIfEmpty(Mono.fromCallable(() -> ResponseEntity.notFound().build()));
     }
