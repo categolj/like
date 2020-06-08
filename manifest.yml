@@ -15,6 +15,8 @@ applications:
     JAVA_OPTS: -XX:ReservedCodeCacheSize=32M -Xss512k -Duser.timezone=Asia/Tokyo
     JBP_CONFIG_OPEN_JDK_JRE: '{memory_calculator: {stack_threads: 16}, jre: {version: 14.+}}'
     JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'
+    INFO_JAVA_VERSION: ${java.runtime.version}
+    INFO_JAVA_VENDOR: ${java.vm.vendor}
     SPRING_PROFILES_ACTIVE: cloud
     SPRING_R2DBC_URL: r2dbc:mysql://${vcap.services.like-db.credentials.hostname}:${vcap.services.like-db.credentials.port}/${vcap.services.like-db.credentials.name}
     SPRING_R2DBC_USERNAME: ${vcap.services.like-db.credentials.username}
