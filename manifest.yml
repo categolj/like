@@ -6,7 +6,7 @@ applications:
   buildpacks:
   - java_buildpack_offline
   health-check-type: http
-  health-check-http-endpoint: /actuator/health
+  health-check-http-endpoint: /actuator/health/readiness
   services:
   - like-db # cf create-service p.mysql db-small like-db
   - prometheus-rsocket-proxy # cf create-user-provided-service prometheus-rsocket-proxy -p '{"host": "rsocket.example.com", "port": 7001}'
@@ -15,6 +15,7 @@ applications:
     JAVA_OPTS: -XX:ReservedCodeCacheSize=32M -Xss512k -Duser.timezone=Asia/Tokyo
     JBP_CONFIG_OPEN_JDK_JRE: '{memory_calculator: {stack_threads: 16}, jre: {version: 14.+}}'
     JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'
+    MANAGEMENT_HEALTH_PROBES_ENABLED: true
     INFO_JAVA_VERSION: ${java.runtime.version}
     INFO_JAVA_VENDOR: ${java.vm.vendor}
     SPRING_PROFILES_ACTIVE: cloud
