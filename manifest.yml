@@ -27,6 +27,7 @@ applications:
     SPRING_R2DBC_POOL_MAX_SIZE: 4
     SPRING_ZIPKIN_BASE_URL: ${vcap.services.zipkin.credentials.url}
     SPRING_ZIPKIN_SERVICE_NAME: ${management.metrics.tags.space}:like
+    SPRING_SLEUTH_WEB_ADDITIONALSKIPPATTERN: /actuator.*|/cloudfoundryapplication.*
     MANAGEMENT_METRICS_TAGS_ORGANIZATION: ${vcap.application.organization_name}
     MANAGEMENT_METRICS_TAGS_SPACE: ${vcap.application.space_name}
     MANAGEMENT_METRICS_TAGS_APPLICATION: ${vcap.application.application_name}
