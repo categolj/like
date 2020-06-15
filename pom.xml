@@ -17,7 +17,8 @@
     <properties>
         <java.version>14</java.version>
         <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
-        <testcontainers.version>1.14.2</testcontainers.version>
+		<wavefront.version>2.0.0-SNAPSHOT</wavefront.version>
+		<testcontainers.version>1.14.2</testcontainers.version>
     </properties>
 
     <dependencies>
@@ -104,6 +105,10 @@
             <artifactId>prometheus-rsocket-spring</artifactId>
             <version>1.0.0</version>
         </dependency>
+		<dependency>
+			<groupId>com.wavefront</groupId>
+			<artifactId>wavefront-spring-boot-starter</artifactId>
+		</dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
@@ -172,6 +177,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+			<dependency>
+				<groupId>com.wavefront</groupId>
+				<artifactId>wavefront-spring-boot-bom</artifactId>
+				<version>${wavefront.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
         </dependencies>
     </dependencyManagement>
 
