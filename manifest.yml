@@ -6,7 +6,8 @@ applications:
   buildpacks:
   - java_buildpack_offline
   health-check-type: http
-  health-check-http-endpoint: /actuator/health/readiness
+  #health-check-http-endpoint: /actuator/health/readiness
+  health-check-http-endpoint: /actuator/health
   services:
   - like-db # cf create-service p.mysql db-small like-db
   - prometheus-rsocket-proxy # cf create-user-provided-service prometheus-rsocket-proxy -p '{"host": "rsocket.example.com", "port": 7001}'
