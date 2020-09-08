@@ -1,7 +1,5 @@
 package am.ik.blog.like;
 
-import javax.xml.crypto.Data;
-
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
