@@ -1,5 +1,7 @@
 package am.ik.blog.like;
 
+import javax.xml.crypto.Data;
+
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.data.r2dbc.connectionfactory.init.ConnectionFactoryInitializer;
 import org.springframework.data.r2dbc.connectionfactory.init.ResourceDatabasePopulator;
+import org.springframework.data.r2dbc.core.DatabaseClient;
 
 @SpringBootApplication
 public class LikeApplication {
@@ -17,6 +20,13 @@ public class LikeApplication {
     public static void main(String[] args) {
         SpringApplication.run(LikeApplication.class, args);
     }
+
+    @Bean
+	public DatabaseClient databaseClient(ConnectionFactory connectionFactory) {
+    	return DatabaseClient.builder()
+				.connectionFactory(connectionFactory)
+				.build();
+	}
 
     @Bean
     public ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory, @Value("${script.location:classpath://schema.sql}") Resource script) {
