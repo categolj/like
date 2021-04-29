@@ -1,0 +1,39 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.springframework.cloud:spring-cloud-dependencies
+    versions:
+    - 2020.0.2
+    - 2020.0.2-SNAPSHOT
+    - 2020.0.3-SNAPSHOT
+    - 2020.1.0-SNAPSHOT
+  - dependency-name: org.webjars:swagger-ui
+    versions:
+    - 3.40.0
+    - 3.42.0
+    - 3.43.0
+    - 3.44.0
+    - 3.45.0
+    - 3.46.0
+  - dependency-name: org.springframework.boot:spring-boot-starter-parent
+    versions:
+    - 2.4.2
+    - 2.4.3
+    - 2.4.4
+  - dependency-name: org.testcontainers:mysql
+    versions:
+    - 1.15.1
+    - 1.15.2
+  - dependency-name: org.testcontainers:r2dbc
+    versions:
+    - 1.15.1
+    - 1.15.2
+  - dependency-name: org.testcontainers:junit-jupiter
+    versions:
+    - 1.15.1
+    - 1.15.2
